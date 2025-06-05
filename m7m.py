@@ -40,8 +40,9 @@ class NPCShopBot(commands.Bot):
         self.active_shops = {}  # Almacena las tiendas activas por canal
         
     async def setup_hook(self):
-        await self.load_extension("cogs.npc_commands")
-        logger.info("Cogs cargados correctamente")
+        # Añadir el cog directamente sin cargar extensión externa
+        await self.add_cog(NPCCommands(self))
+        logger.info("Comandos cargados correctamente")
 
 bot = NPCShopBot()
 
@@ -558,13 +559,6 @@ async def on_command_error(ctx, error):
         await ctx.send("❌ No tienes permisos para usar este comando.")
     else:
         logger.error(f"Error en comando: {error}")
-
-# Configurar el cog
-async def setup(bot):
-    await bot.add_cog(NPCCommands(bot))
-
-# Archivo separado para el cog (crear en carpeta cogs/npc_commands.py)
-bot.load_extension = setup
 
 if __name__ == "__main__":
     try:
